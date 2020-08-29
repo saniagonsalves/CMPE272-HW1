@@ -1,0 +1,19 @@
+---
+- name: Undeploy Apache
+  hosts: apache
+  tasks:
+  - name: stop service
+    service: name=httpd state=stopped enabled=no
+  - name: remove webpage
+    raw: rm /var/www/html/index.html
+  - name: Close http port
+    firewalld:
+      service: http
+      permanent: true
+      state: disabled
+  - name: Restart firewall service
+    service:
+      name: firewalld
+      state: restarted
+  - name: remove apache server
+    yum: pkg=httpd state=removed
