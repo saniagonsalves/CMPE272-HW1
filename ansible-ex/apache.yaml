@@ -1,0 +1,19 @@
+---
+- name: Deploy Apache
+  hosts: apache
+  tasks:
+  - name: install latest or update
+    yum: pkg=httpd state=latest
+  - name: start service and auto start on boot
+    service: name=httpd state=started enabled=yes
+  - name: Create Hello World and fetch variable
+    raw: echo "<h1>Hello World print from Centos{{ num_var }}</h1>" > /var/www/html/index.html
+  - name: Open http port
+    firewalld:
+      service: http
+      permanent: true
+      state: enabled
+  - name: Restart firewall service
+    service:
+      name: firewalld
+      state: restarted
