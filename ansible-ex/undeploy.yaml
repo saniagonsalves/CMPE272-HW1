@@ -8,12 +8,12 @@
     raw: rm /var/www/html/index.html
   - name: close 8080
     firewalld:
-    port: 8080/tcp
-    permanent: yes
-    state: disabled
+      port: 8080/tcp
+      permanent: yes
+      state: disabled
   - name: Redirect port 8080 to 80 with Rich Rule
     firewalld:
-    rich_rule: rule family=ipv4 forward-port port=8080 protocol=tcp to-port=80
+      rich_rule: rule family=ipv4 forward-port port=8080 protocol=tcp to-port=80
       zone: public
       permanent: yes
       immediate: yes
@@ -21,5 +21,6 @@
   - name: Restart firewall service
     service:
       name: firewalld
-      state: restarted  - name: remove apache server
+      state: restarted
+  - name: remove apache server
     yum: pkg=httpd state=removed
