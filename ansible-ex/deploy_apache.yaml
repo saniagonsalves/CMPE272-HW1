@@ -9,9 +9,9 @@
   - name: Create Hello World and fetch variable
     raw: echo "<h1>Hello World print from Centos{{ num_var }}</h1>" > /var/www/html/index.html
   - firewalld:
-    port: 8080/tcp
-    permanent: yes
-    state: enabled
+      port: 8080/tcp
+      permanent: yes
+      state: enabled
   - name: Redirect port 8080 to 80 with Rich Rule
     firewalld:
     rich_rule: rule family=ipv4 forward-port port=8080 protocol=tcp to-port=80
