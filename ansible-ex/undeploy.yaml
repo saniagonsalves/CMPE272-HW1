@@ -6,14 +6,20 @@
     service: name=httpd state=stopped enabled=no
   - name: remove webpage
     raw: rm /var/www/html/index.html
-  - name: Close http port
+  - name: close 8080
     firewalld:
-      service: http
-      permanent: true
+    port: 8080/tcp
+    permanent: yes
+    state: disabled
+  - name: Redirect port 8080 to 80 with Rich Rule
+    firewalld:
+    rich_rule: rule family=ipv4 forward-port port=8080 protocol=tcp to-port=80
+      zone: public
+      permanent: yes
+      immediate: yes
       state: disabled
   - name: Restart firewall service
     service:
       name: firewalld
-      state: restarted
-  - name: remove apache server
+      state: restarted  - name: remove apache server
     yum: pkg=httpd state=removed
